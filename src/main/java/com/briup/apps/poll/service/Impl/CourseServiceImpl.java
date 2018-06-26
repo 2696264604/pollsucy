@@ -20,14 +20,14 @@ public class CourseServiceImpl implements ICourseService {
 		//模板
 		CourseExample example=new CourseExample();
 		//调用QBE，并将结果返回
-		return courseMapper.selectByExample(example);
+		return courseMapper.selectByExampleWithBLOBs(example);
 	}
 
 	@Override
 	public List<Course> query(String keywords) throws Exception {
 		CourseExample example=new CourseExample();
 		example.createCriteria().andNameLike(keywords);
-		return courseMapper.selectByExample(example);
+		return courseMapper.selectByExampleWithBLOBs(example);
 	}
 
 	
