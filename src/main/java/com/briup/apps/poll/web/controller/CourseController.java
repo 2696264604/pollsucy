@@ -48,17 +48,7 @@ public class CourseController {
 		
 	}
 	
-//	@GetMapping("deleteById")//删除一个
-//	public MsgResponse deleteById(){
-//		try {
-//			List<Course> list=courseService.findAll();
-//			return MsgResponse.success("success", list);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return MsgResponse.error(e.getMessage());
-//		}
-//		
-//	}
+
 	
 	@PostMapping("updateCourse")//更新
 	public MsgResponse updateCourse(Course course){
