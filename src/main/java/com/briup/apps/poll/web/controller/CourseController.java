@@ -14,75 +14,108 @@ import com.briup.apps.poll.bean.Course;
 import com.briup.apps.poll.service.ICourseService;
 import com.briup.apps.poll.util.MsgResponse;
 
+import io.swagger.annotations.ApiOperation;
+
 @RestController
-@RequestMapping("/Course")
+@RequestMapping("/course")
 public class CourseController {
+	/**
+	 * @return
+	 */
 	@Autowired
-	private ICourseService courseService;
-	//涉及多个值用postMapping
-	@PostMapping
-	public MsgResponse batchDelete(Long[] ids){
-		try {	
-			List<Long> idList=new ArrayList<>();
-			for(long id : ids){
+	private ICourseService courserService;
+
+	// 批量删除
+	@PostMapping("batchDelete")
+	public MsgResponse batchDelete(long[] ids) {
+		try {
+			List<Long> idList = new ArrayList<>();
+			for (long id : ids) {
 				idList.add(id);
-			}			
-			courseService.batchDelete(idList);
+			}
+			courserService.batchDelete(idList);
 			return MsgResponse.success("批量删除成功", null);
 		} catch (Exception e) {
-			e.printStackTrace(); 
+			// TODO: handle exception
+			e.printStackTrace();
 			return MsgResponse.error(e.getMessage());
 		}
-		
 	}
+
+	
+	// 删除一个
+	@GetMapping("DeleteCourseById")
+	public MsgResponse DeleteCourseById(@RequestParam Long id) {
+		try {
+			courserService.deleteById(id);
+			return MsgResponse.success("success", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return MsgResponse.error(e.getMessage());
+		}
+	}
+
+//	// 查询
+//	@GetMapping("queryCourse")
+//	public MsgResponse queryCourse() {
+//		try {
+//			List<Course> list = courserService.findAll();
+//			return MsgResponse.success("success", list);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return MsgResponse.error(e.getMessage());
+//		}
+//	}
+	
+	
+	// 关键字查询
+		@ApiOperation("根据关键字查看课程信息")
+		@GetMapping("/queryByKeyWords")
+		public MsgResponse query(String keywords) {
+			try {
+				List<Course> list = courserService.query(keywords);
+				return MsgResponse.success("成功", list);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return MsgResponse.error(e.getMessage());
+			}
+		}
 	
 	@GetMapping("findAllCourse")
-	public MsgResponse findAllCourse(){
+	public MsgResponse findAllCourse() {
 		try {
-			List<Course> list=courseService.findAll();
+			List<Course> list = courserService.findAll();
 			return MsgResponse.success("success", list);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MsgResponse.error(e.getMessage());
 		}
-		
-	}
+	}	
+	
 	
 
-	
-	@PostMapping("updateCourse")//更新
-	public MsgResponse updateCourse(Course course){
+	// 添加
+	@PostMapping("saveCourse")
+	public MsgResponse saveCourse(Course course) {
 		try {
-			courseService.update(course);
-			return MsgResponse.success("修改成功", null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return MsgResponse.error(e.getMessage());
-		}		
-	}
-	
-	@PostMapping("saveCourse")//添加
-	public MsgResponse saveCourse(Course course){
-		try {
-			courseService.save(course);
+			courserService.save(course);
 			return MsgResponse.success("添加成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MsgResponse.error(e.getMessage());
-		}		
+		}
 	}
-	@GetMapping("deleteByIdCourse")//删除
-	public MsgResponse deleteByIdCourse(@RequestParam Long id){
+
+	// 更新
+	@PostMapping("updateCourse")
+	public MsgResponse updateCourse(Course course) {
 		try {
-			courseService.deleteById(id);
-			return MsgResponse.success("删除成功", null);
+			courserService.update(course);
+			return MsgResponse.success("修改成功", null);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return MsgResponse.error(e.getMessage());
-		}		
+		}
 	}
-	
-
-	
 
 }
